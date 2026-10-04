@@ -52,3 +52,32 @@ If SRM fails, the experiment is invalid until the loss mechanism is found; a sig
 ## Decision rule
 
 Recommend a staged launch only when the primary confidence interval excludes zero in the favourable direction, the observed lift is practically meaningful, SRM and balance checks pass, and no guardrail crosses its threshold. Secondary metrics support interpretation but cannot override a failed primary or trust check.
+
+## Estimand and analysis details
+
+- Estimand: average intention-to-treat effect among users assigned at their first qualifying high-price computer cart during the experiment window.
+- Binary effect: difference in user-level conversion proportions with a two-sided z-test and Newcombe confidence interval.
+- Continuous value: Welch difference in means. Zero is retained for non-purchasers; converter-only value is not a decision metric.
+- CUPED: linear adjustment using only pre-assignment purchase-item value, centred on the pooled mean. Both adjusted and unadjusted estimates are reported.
+- Standard error unit: user, matching randomisation. Product/item rows are aggregated before comparison.
+- Alpha: 0.05 for the single primary outcome. Secondary and exploratory results do not receive launch authority.
+
+## Missing data and non-compliance
+
+- Missing assignment record: exclude from the experiment dataset and trigger reconciliation failure; never infer variant from page content.
+- Assigned but panel not rendered: retain in assigned variant for ITT and report render coverage separately.
+- Outcome telemetry unavailable differentially by variant: stop interpretation and investigate SRM/join-rate failures.
+- User has multiple qualifying products: retain one user-level assignment and count conversion if any qualifying product is purchased under the prespecified definition.
+- Cross-device identity failure: analyse by assignment identity and document expected dilution; do not stitch with post-outcome behaviour.
+
+## Exploratory analyses
+
+- First-observed versus returning status, defined before assignment.
+- Days 1–2 versus days 3–14 for temporal stability.
+- Component type and brand only if pre-period coverage and sample size are adequate.
+
+Heterogeneity is evaluated with a treatment-by-segment interaction. “Significant in one subgroup and not significant in another” is not accepted as evidence that effects differ.
+
+## Production readiness gate
+
+Before the A/B test, run a live A/A using the same eligibility trigger, assignment service, event contracts, and scorecard. Confirm allocation, cross-variant exposure, assignment/outcome join rates, metric variance, and false-positive calibration. The repository's Monte Carlo A/A validates code behaviour only.

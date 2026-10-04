@@ -108,17 +108,21 @@ pre_period AS (
         eligible.user_id,
         count(session.analytics_session_id) FILTER (
             WHERE session.session_started_at < eligible.first_eligible_at
+                AND session.analytics_session_id <> eligible.eligible_session_id
         ) AS prior_sessions,
         count(session.analytics_session_id) FILTER (
             WHERE session.session_started_at < eligible.first_eligible_at
+                AND session.analytics_session_id <> eligible.eligible_session_id
                 AND session.reached_cart
         ) AS prior_cart_sessions,
         count(session.analytics_session_id) FILTER (
             WHERE session.session_started_at < eligible.first_eligible_at
+                AND session.analytics_session_id <> eligible.eligible_session_id
                 AND session.reached_purchase
         ) AS prior_purchase_sessions,
         coalesce(sum(session.purchase_item_value) FILTER (
             WHERE session.session_started_at < eligible.first_eligible_at
+                AND session.analytics_session_id <> eligible.eligible_session_id
         ), 0) AS prior_purchase_item_value
     FROM eligible_outcome eligible
     LEFT JOIN mart_session_funnel session USING (user_id)

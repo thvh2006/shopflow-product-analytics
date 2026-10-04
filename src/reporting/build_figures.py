@@ -8,6 +8,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 os.environ.setdefault("MPLCONFIGDIR", str(PROJECT_ROOT / ".cache" / "matplotlib"))
 
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
 
 DATABASE_PATH = PROJECT_ROOT / "data" / "processed" / "shopflow.duckdb"
@@ -129,6 +130,124 @@ def build_experiment_effect() -> None:
     plt.close(figure)
 
 
+def build_session_sensitivity(connection: duckdb.DuckDBPyConnection) -> None:
+    frame = connection.execute(
+        "SELECT * FROM mart_session_threshold_sensitivity ORDER BY inactivity_minutes"
+    ).df()
+    figure, axis = plt.subplots(figsize=(9, 5.5))
+    axis.plot(
+        frame["inactivity_minutes"],
+        frame["view_to_cart_rate"] * 100,
+        marker="o",
+        linewidth=2.5,
+        label="View → cart",
+        color=COLORS["blue"],
+    )
+    axis.plot(
+        frame["inactivity_minutes"],
+        frame["view_to_purchase_rate"] * 100,
+        marker="o",
+        linewidth=2.5,
+        label="View → purchase",
+        color=COLORS["teal"],
+    )
+    axis.set_title("Core rates are stable across session thresholds")
+    axis.set_xlabel("Inactivity threshold (minutes)")
+    axis.set_ylabel("Qualified-session conversion (%)")
+    axis.set_xticks(frame["inactivity_minutes"])
+    axis.legend(frameon=False)
+    sns.despine()
+    figure.savefig(FIGURE_DIRECTORY / "05_session_threshold_sensitivity.png")
+    plt.close(figure)
+
+
+def build_adjusted_odds() -> None:
+    frame = pd.read_csv(REPORT_DIRECTORY / "cart_completion_model.csv")
+    frame = frame.loc[frame["term"].str.contains("price_quartile")].copy()
+    frame["quartile"] = frame["term"].str.extract(r"\[T\.(Q\d)\]")
+    frame = frame.sort_values("quartile", ascending=False)
+    figure, axis = plt.subplots(figsize=(9, 5))
+    axis.errorbar(
+        frame["odds_ratio"],
+        frame["quartile"],
+        xerr=[frame["odds_ratio"] - frame["ci_low"], frame["ci_high"] - frame["odds_ratio"]],
+        fmt="o",
+        color=COLORS["blue"],
+        capsize=6,
+        markersize=9,
+    )
+    axis.axvline(1, color="#777777", linewidth=1.2, linestyle="--")
+    axis.set_title("Higher price remains associated with lower cart completion")
+    axis.set_xlabel("Adjusted odds ratio versus Q1 (95% CI)")
+    axis.set_ylabel("Global price quartile")
+    sns.despine()
+    figure.savefig(FIGURE_DIRECTORY / "06_adjusted_price_odds.png")
+    plt.close(figure)
+
+
+def build_power_curve() -> None:
+    frame = pd.read_csv(REPORT_DIRECTORY / "power_curve.csv")
+    figure, axis = plt.subplots(figsize=(9, 5.5))
+    axis.plot(
+        frame["relative_lift"] * 100,
+        frame["total_users"],
+        marker="o",
+        color=COLORS["coral"],
+        linewidth=2.5,
+    )
+    target = frame.loc[frame["relative_lift"] == 0.05].iloc[0]
+    axis.scatter([5], [target["total_users"]], s=130, color=COLORS["navy"], zorder=3)
+    axis.annotate(
+        f"Plan: {int(target['total_users']):,} users",
+        (5, target["total_users"]),
+        xytext=(12, 20),
+        textcoords="offset points",
+        fontsize=11,
+    )
+    axis.set_title("Small effects require disproportionately larger experiments")
+    axis.set_xlabel("Relative lift to detect (%)")
+    axis.set_ylabel("Total users for 80% power")
+    sns.despine()
+    figure.savefig(FIGURE_DIRECTORY / "07_power_curve.png")
+    plt.close(figure)
+
+
+def build_heterogeneity() -> None:
+    results = json.loads((REPORT_DIRECTORY / "experiment_healthy_results.json").read_text())
+    heterogeneity = results["heterogeneity"]
+    labels = ["First-observed", "Returning", "Days 1–2", "Days 3–14"]
+    keys = ["first_observed_users", "returning_users", "days_1_2", "days_3_14"]
+    frame = pd.DataFrame(
+        [
+            {
+                "label": label,
+                "effect": heterogeneity[key]["absolute_effect"] * 100,
+                "lower": heterogeneity[key]["ci_low"] * 100,
+                "upper": heterogeneity[key]["ci_high"] * 100,
+            }
+            for label, key in zip(labels, keys, strict=True)
+        ]
+    )
+    frame = frame.iloc[::-1]
+    figure, axis = plt.subplots(figsize=(9, 5.5))
+    axis.errorbar(
+        frame["effect"],
+        frame["label"],
+        xerr=[frame["effect"] - frame["lower"], frame["upper"] - frame["effect"]],
+        fmt="o",
+        capsize=5,
+        markersize=8,
+        color=COLORS["teal"],
+    )
+    axis.axvline(0, color="#777777", linewidth=1.2)
+    axis.set_title("Exploratory slices are compatible with one pooled effect")
+    axis.set_xlabel("Absolute conversion effect (percentage points)")
+    axis.set_ylabel("")
+    sns.despine(left=True)
+    figure.savefig(FIGURE_DIRECTORY / "08_experiment_heterogeneity.png")
+    plt.close(figure)
+
+
 def main() -> None:
     _style()
     FIGURE_DIRECTORY.mkdir(parents=True, exist_ok=True)
@@ -136,7 +255,11 @@ def main() -> None:
         build_funnel(connection)
         build_price_heatmap(connection)
         build_subcategory_opportunity(connection)
+        build_session_sensitivity(connection)
     build_experiment_effect()
+    build_adjusted_odds()
+    build_power_curve()
+    build_heterogeneity()
     print(f"Built portfolio figures in {FIGURE_DIRECTORY}")
 
 

@@ -6,34 +6,34 @@
     "treatment": 8742
   },
   "srm_p_value": 8.678103706347878e-20,
-  "max_absolute_covariate_smd": 0.024617989477293448,
+  "max_absolute_covariate_smd": 0.009244325594692659,
   "covariate_smd": {
-    "prior_sessions": 0.00019775813185492165,
-    "prior_purchase_rate": 0.024617989477293448,
-    "prior_purchase_item_value": -0.0029151383855964036
+    "prior_sessions": 0.0002597090954132818,
+    "prior_purchase_rate": -0.00862905345028612,
+    "prior_purchase_item_value": -0.009244325594692659
   },
   "primary_conversion": {
-    "control_rate": 0.4237084501401682,
-    "treatment_rate": 0.45698924731182794,
-    "absolute_effect": 0.033280797171659715,
-    "relative_lift": 0.07854645608472044,
-    "ci_low": 0.01903126610633208,
-    "ci_high": 0.04751811791030594,
-    "p_value": 4.6816579676923614e-06
+    "control_rate": 0.4302162595114137,
+    "treatment_rate": 0.4631663234957676,
+    "absolute_effect": 0.032950063984353906,
+    "relative_lift": 0.07658953667110246,
+    "ci_low": 0.018679828601076684,
+    "ci_high": 0.04720748654471944,
+    "p_value": 6.001069754482228e-06
   },
   "purchase_value_per_eligible_user": {
-    "difference": 16.104050125559183,
-    "ci_low": 9.99068244168605,
-    "ci_high": 22.21741780943232,
-    "p_value": 2.4556234745145376e-07
+    "difference": 12.078802073353415,
+    "ci_low": 7.333249036587282,
+    "ci_high": 16.824355110119548,
+    "p_value": 6.135381103399428e-07
   },
   "cuped_purchase_value_per_eligible_user": {
-    "difference": 16.205953030723038,
-    "ci_low": 10.174558150682696,
-    "ci_high": 22.23734791076338,
-    "p_value": 1.40785383291343e-07,
-    "theta": 0.08740746690179962,
-    "variance_reduction": 0.027110797144299204
+    "difference": 12.15842895174103,
+    "ci_low": 7.418729894309784,
+    "ci_high": 16.898128009172275,
+    "p_value": 5.009381318216868e-07,
+    "theta": 0.2252087441452541,
+    "variance_reduction": 0.002719410274590661
   },
   "guardrails": {
     "checkout_latency_ms": {
@@ -47,90 +47,131 @@
       "treatment": 0.0070921985815602835
     }
   },
+  "heterogeneity": {
+    "first_observed_users": {
+      "control_rate": 0.4209222785705862,
+      "treatment_rate": 0.4547174912138416,
+      "absolute_effect": 0.03379521264325541,
+      "ci_low": 0.01832633061636496,
+      "ci_high": 0.04924991236614665,
+      "control_n": 8479,
+      "treatment_n": 7398
+    },
+    "returning_users": {
+      "control_rate": 0.4824387011265739,
+      "treatment_rate": 0.5096726190476191,
+      "absolute_effect": 0.02723391792104518,
+      "ci_low": -0.009508454755311452,
+      "ci_high": 0.06387498383894588,
+      "control_n": 1509,
+      "treatment_n": 1344
+    },
+    "returning_interaction_p_value": 0.7279251557069204,
+    "days_1_2": {
+      "control_rate": 0.4420041180507893,
+      "treatment_rate": 0.46498371335504884,
+      "absolute_effect": 0.022979595304259526,
+      "ci_low": -0.014784264093285683,
+      "ci_high": 0.0606988117748898,
+      "control_n": 1457,
+      "treatment_n": 1228
+    },
+    "days_3_14": {
+      "control_rate": 0.4282030242644473,
+      "treatment_rate": 0.46286931062017567,
+      "absolute_effect": 0.03466628635572838,
+      "ci_low": 0.019255362774840044,
+      "ci_high": 0.050060928539974084,
+      "control_n": 8531,
+      "treatment_n": 7514
+    },
+    "early_window_interaction_p_value": 0.5709058422185569,
+    "warning": "Exploratory slices; interaction tests, not within-slice significance, assess heterogeneity."
+  },
   "daily_effect": [
     {
       "experiment_day": 1,
-      "control": 0.45170454545454547,
-      "treatment": 0.461038961038961,
-      "absolute_effect": 0.009334415584415556
+      "control": 0.453125,
+      "treatment": 0.4594155844155844,
+      "absolute_effect": 0.006290584415584388
     },
     {
       "experiment_day": 2,
-      "control": 0.42762284196547146,
-      "treatment": 0.4526143790849673,
-      "absolute_effect": 0.024991537119495866
+      "control": 0.4316069057104914,
+      "treatment": 0.47058823529411764,
+      "absolute_effect": 0.03898132958362627
     },
     {
       "experiment_day": 3,
-      "control": 0.4317241379310345,
-      "treatment": 0.4689075630252101,
-      "absolute_effect": 0.037183425094175604
+      "control": 0.4413793103448276,
+      "treatment": 0.4638655462184874,
+      "absolute_effect": 0.022486235873659832
     },
     {
       "experiment_day": 4,
-      "control": 0.4132791327913279,
-      "treatment": 0.48465266558966075,
-      "absolute_effect": 0.07137353279833286
+      "control": 0.4186991869918699,
+      "treatment": 0.46849757673667203,
+      "absolute_effect": 0.04979838974480211
     },
     {
       "experiment_day": 5,
-      "control": 0.38966480446927376,
-      "treatment": 0.4525993883792049,
-      "absolute_effect": 0.06293458390993112
+      "control": 0.3994413407821229,
+      "treatment": 0.4648318042813456,
+      "absolute_effect": 0.06539046349922267
     },
     {
       "experiment_day": 6,
-      "control": 0.41237113402061853,
-      "treatment": 0.462015503875969,
-      "absolute_effect": 0.04964436985535048
+      "control": 0.4182621502209131,
+      "treatment": 0.4744186046511628,
+      "absolute_effect": 0.05615645443024969
     },
     {
       "experiment_day": 7,
-      "control": 0.43275632490013316,
-      "treatment": 0.42543171114599687,
-      "absolute_effect": -0.007324613754136289
+      "control": 0.4340878828229028,
+      "treatment": 0.4521193092621664,
+      "absolute_effect": 0.018031426439263643
     },
     {
       "experiment_day": 8,
-      "control": 0.423562412342216,
-      "treatment": 0.47487844408427876,
-      "absolute_effect": 0.051316031742062784
+      "control": 0.426367461430575,
+      "treatment": 0.46677471636953,
+      "absolute_effect": 0.04040725493895497
     },
     {
       "experiment_day": 9,
-      "control": 0.42319277108433734,
-      "treatment": 0.4401244167962675,
-      "absolute_effect": 0.016931645711930177
+      "control": 0.4246987951807229,
+      "treatment": 0.4712286158631415,
+      "absolute_effect": 0.04652982068241862
     },
     {
       "experiment_day": 10,
-      "control": 0.43490701001430615,
-      "treatment": 0.45854483925549916,
-      "absolute_effect": 0.02363782924119301
+      "control": 0.44206008583690987,
+      "treatment": 0.4619289340101523,
+      "absolute_effect": 0.019868848173242415
     },
     {
       "experiment_day": 11,
-      "control": 0.4260614934114202,
+      "control": 0.43923865300146414,
       "treatment": 0.4709784411276949,
-      "absolute_effect": 0.04491694771627469
+      "absolute_effect": 0.03173978812623074
     },
     {
       "experiment_day": 12,
-      "control": 0.4279891304347826,
-      "treatment": 0.45234248788368336,
-      "absolute_effect": 0.02435335744890077
+      "control": 0.4375,
+      "treatment": 0.44426494345718903,
+      "absolute_effect": 0.006764943457189032
     },
     {
       "experiment_day": 13,
-      "control": 0.3972222222222222,
-      "treatment": 0.45962732919254656,
-      "absolute_effect": 0.062405106970324364
+      "control": 0.40694444444444444,
+      "treatment": 0.468944099378882,
+      "absolute_effect": 0.06199965493443754
     },
     {
       "experiment_day": 14,
-      "control": 0.43988684582743987,
-      "treatment": 0.437403400309119,
-      "absolute_effect": -0.0024834455183208592
+      "control": 0.4497878359264498,
+      "treatment": 0.446676970633694,
+      "absolute_effect": -0.0031108652927557823
     }
   ]
 }

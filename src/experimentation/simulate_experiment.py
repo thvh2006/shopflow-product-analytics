@@ -50,7 +50,7 @@ def simulate_experiment(
     returning = sampled["returning_user"].to_numpy()
     # The intercept is calibrated so the synthetic control is close to the
     # 42.9% conversion observed in the eligible user cohort.
-    baseline_logit = -0.57 + (0.22 * returning) + (0.12 * prior_signal)
+    baseline_logit = -0.33 + (0.22 * returning) + (0.12 * prior_signal)
     treatment = (sampled["variant"] == "treatment").to_numpy()
     novelty_multiplier = np.where(sampled["experiment_day"].to_numpy() <= 2, 1.18, 1.0)
     treatment_log_odds = 0.12 * novelty_multiplier

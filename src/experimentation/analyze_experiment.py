@@ -4,7 +4,9 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import statsmodels.formula.api as smf
 from scipy import stats
+from statsmodels.genmod.families import Binomial
 from statsmodels.stats.proportion import confint_proportions_2indep, proportions_ztest
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -23,6 +25,28 @@ def _difference_in_means(
         "ci_low": float(difference - critical_value * standard_error),
         "ci_high": float(difference + critical_value * standard_error),
         "p_value": float(stats.ttest_ind(treatment, control, equal_var=False).pvalue),
+    }
+
+
+def _binary_effect(frame: pd.DataFrame) -> dict[str, float]:
+    treatment = frame.loc[frame["variant"] == "treatment", "converted"]
+    control = frame.loc[frame["variant"] == "control", "converted"]
+    ci_low, ci_high = confint_proportions_2indep(
+        int(treatment.sum()),
+        len(treatment),
+        int(control.sum()),
+        len(control),
+        method="newcomb",
+        compare="diff",
+    )
+    return {
+        "control_rate": float(control.mean()),
+        "treatment_rate": float(treatment.mean()),
+        "absolute_effect": float(treatment.mean() - control.mean()),
+        "ci_low": float(ci_low),
+        "ci_high": float(ci_high),
+        "control_n": len(control),
+        "treatment_n": len(treatment),
     }
 
 
@@ -62,6 +86,37 @@ def analyze(data: pd.DataFrame) -> dict:
         pooled_sd = np.sqrt((treatment[column].var(ddof=1) + control[column].var(ddof=1)) / 2)
         balance[column] = float((treatment[column].mean() - control[column].mean()) / pooled_sd)
 
+    model_frame = data.copy()
+    model_frame["treatment"] = (model_frame["variant"] == "treatment").astype(int)
+    model_frame["early_window"] = (model_frame["experiment_day"] <= 2).astype(int)
+    returning_interaction = smf.glm(
+        "converted ~ treatment * returning_user",
+        data=model_frame,
+        family=Binomial(),
+    ).fit()
+    novelty_interaction = smf.glm(
+        "converted ~ treatment * early_window",
+        data=model_frame,
+        family=Binomial(),
+    ).fit()
+    heterogeneity = {
+        "first_observed_users": _binary_effect(
+            model_frame.loc[model_frame["returning_user"] == 0]
+        ),
+        "returning_users": _binary_effect(
+            model_frame.loc[model_frame["returning_user"] == 1]
+        ),
+        "returning_interaction_p_value": float(
+            returning_interaction.pvalues["treatment:returning_user"]
+        ),
+        "days_1_2": _binary_effect(model_frame.loc[model_frame["early_window"] == 1]),
+        "days_3_14": _binary_effect(model_frame.loc[model_frame["early_window"] == 0]),
+        "early_window_interaction_p_value": float(
+            novelty_interaction.pvalues["treatment:early_window"]
+        ),
+        "warning": "Exploratory slices; interaction tests, not within-slice significance, assess heterogeneity.",
+    }
+
     return {
         "scenario": str(data["scenario"].iloc[0]),
         "sample_size": len(data),
@@ -95,6 +150,7 @@ def analyze(data: pd.DataFrame) -> dict:
                 "treatment": float(treatment["error_event"].mean()),
             },
         },
+        "heterogeneity": heterogeneity,
         "daily_effect": daily.to_dict(orient="records"),
     }
 

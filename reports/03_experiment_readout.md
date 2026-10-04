@@ -8,7 +8,7 @@
 
 - Assignment: 10,033 control and 9,967 treatment users.
 - SRM chi-square `p = 0.641`, above the preregistered 0.001 failure threshold.
-- Maximum absolute covariate SMD: 0.024, below the 0.10 threshold.
+- Maximum absolute covariate SMD: 0.008, below the 0.10 threshold.
 - Runtime: all 14 generated experiment days represented.
 
 The effect is interpreted only after these checks pass.
@@ -17,24 +17,41 @@ The effect is interpreted only after these checks pass.
 
 | Metric | Control | Treatment | Absolute effect | Relative lift | 95% CI | p-value |
 |---|---:|---:|---:|---:|---:|---:|
-| Same-product conversion | 42.40% | 46.01% | +3.61 pp | +8.52% | +2.24 to +4.99 pp | <0.001 |
+| Same-product conversion | 43.05% | 46.55% | +3.51 pp | +8.14% | +2.13 to +4.88 pp | <0.001 |
 
 The confidence interval excludes zero and the observed effect exceeds the 2.15-point minimum detectable effect used for planning.
 
 ## Secondary and guardrail outcomes
 
-- Purchase-item value per eligible user increases by 16.90 source-value units (95% CI 10.99 to 22.80).
-- CUPED-adjusted value increases by 17.09 (95% CI 11.27 to 22.92), with 2.82% variance reduction. The small reduction is reported honestly rather than presented as a dramatic efficiency gain.
+- Purchase-item value per eligible user increases by 12.50 source-value units (95% CI 7.92 to 17.08).
+- CUPED-adjusted value increases by 12.56 (95% CI 7.99 to 17.14), with only 0.26% variance reduction. Most eligible users are first-observed and have no useful history, so CUPED adds almost no precision. This limitation is reported rather than hidden.
 - Checkout latency increases by 17.48 ms (95% CI 12.75 to 22.22), statistically detectable but below the +50 ms decision threshold.
 - Error-event rate is 0.65% in control and 0.75% in treatment. The absolute change is about +0.10 points and remains below the preregistered +0.20-point threshold, but merits monitoring.
 
 Daily estimates are noisy, as expected at one-fourteenth of the pooled sample. The pooled result is not driven only by the first two novelty days.
 
+## Power and A/A validation
+
+At the 42.94% planning baseline, a 5% relative lift requires 8,391 users per arm. The 20,000-user run clears that requirement. A 2% relative lift would require 52,273 per arm, illustrating why “no significance” would not rule out every small positive effect.
+
+Across 5,000 simulated A/A experiments with 5,000 users per arm, the false-positive rate is 5.18% at nominal alpha 5%, the mean estimated effect is approximately zero, and p-value deciles are close to uniform. This validates the calculation path under simulation; a production assignment service would still need a live A/A.
+
+## Heterogeneity and temporal stability
+
+| Exploratory segment | Control | Treatment | Effect | 95% CI |
+|---|---:|---:|---:|---:|
+| First-observed users | 42.10% | 45.81% | +3.71 pp | +2.22 to +5.20 |
+| Returning users | 48.38% | 50.65% | +2.27 pp | -1.28 to +5.82 |
+| Days 1–2 | 44.24% | 47.18% | +2.94 pp | -0.71 to +6.57 |
+| Days 3–14 | 42.85% | 46.45% | +3.61 pp | +2.12 to +5.09 |
+
+The treatment-by-returning interaction has `p = 0.448`; the treatment-by-early-window interaction has `p = 0.733`. There is no evidence that effects differ across these slices. A significant result in one slice and a non-significant result in another would not, by itself, establish heterogeneity.
+
 ## Red-team telemetry scenario
 
 A second generated dataset deliberately drops treatment telemetry more often. It leaves 9,988 control versus 8,742 treatment records and produces SRM `p < 1e-19`.
 
-Its primary effect is also statistically significant, but it is **not interpretable**. This demonstrates the operational rule: a persuasive p-value cannot rescue broken assignment or telemetry.
+Its primary effect is also statistically significant, but it is **not interpretable**. This demonstrates the operational rule: a persuasive p-value cannot rescue broken assignment or telemetry. Sensitivity analysis shows that 5% differential treatment telemetry loss is enough to cross the preregistered `p < 0.001` SRM threshold at this sample size, while 1–2% loss may not; SRM is a detector, not a complete data-quality guarantee.
 
 ## Rollout and follow-up
 

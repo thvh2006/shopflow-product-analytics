@@ -1,0 +1,33 @@
+{
+  "analysis_population": 49502,
+  "unique_users": 36406,
+  "outcome_rate": 0.47664740818552787,
+  "pseudo_r_squared_cs": 0.015919877995741016,
+  "price_quartile_adjusted_odds_ratios": [
+    {
+      "term": "C(price_quartile, Treatment(reference=\"Q1\"))[T.Q2]",
+      "coefficient": -0.10912304995786463,
+      "odds_ratio": 0.8966200816466965,
+      "ci_low": 0.8436070462006422,
+      "ci_high": 0.952964504543652,
+      "p_value": 0.0004492474163043453
+    },
+    {
+      "term": "C(price_quartile, Treatment(reference=\"Q1\"))[T.Q3]",
+      "coefficient": -0.36824654330517864,
+      "odds_ratio": 0.6919465658641448,
+      "ci_low": 0.6463840224425292,
+      "ci_high": 0.7407207378083871,
+      "p_value": 3.1080452361906464e-26
+    },
+    {
+      "term": "C(price_quartile, Treatment(reference=\"Q1\"))[T.Q4]",
+      "coefficient": -0.4727101909063661,
+      "odds_ratio": 0.6233106861094626,
+      "ci_low": 0.5819133228565262,
+      "ci_high": 0.6676530613031517,
+      "p_value": 2.010586145949996e-41
+    }
+  ],
+  "interpretation": "Conditional association among already-carted session-products; not a causal price effect because the analysis conditions on post-view cart behaviour."
+}

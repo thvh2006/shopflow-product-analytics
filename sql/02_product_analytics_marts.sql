@@ -43,13 +43,24 @@ SELECT
     first_view_at IS NOT NULL AS viewed,
     first_cart_at IS NOT NULL AS carted,
     first_purchase_at IS NOT NULL AS purchased,
-    first_view_at IS NOT NULL
-        AND first_cart_at >= first_view_at AS ordered_view_to_cart,
-    first_view_at IS NOT NULL
-        AND first_cart_at >= first_view_at
-        AND first_purchase_at >= first_cart_at AS ordered_full_funnel,
-    first_purchase_at IS NOT NULL AND first_cart_at IS NULL AS purchase_without_cart,
-    first_cart_at IS NOT NULL AND first_view_at IS NULL AS cart_without_view,
+    coalesce(
+        first_view_at IS NOT NULL AND first_cart_at >= first_view_at,
+        false
+    ) AS ordered_view_to_cart,
+    coalesce(
+        first_view_at IS NOT NULL
+            AND first_cart_at >= first_view_at
+            AND first_purchase_at >= first_cart_at,
+        false
+    ) AS ordered_full_funnel,
+    coalesce(
+        first_purchase_at IS NOT NULL AND first_cart_at IS NULL,
+        false
+    ) AS purchase_without_cart,
+    coalesce(
+        first_cart_at IS NOT NULL AND first_view_at IS NULL,
+        false
+    ) AS cart_without_view,
     CASE
         WHEN category_code = 'unknown' THEN 'unknown'
         ELSE split_part(category_code, '.', 1)

@@ -67,10 +67,15 @@ Microsoft experimentation guidance separates success/OEC metrics, guardrails, fe
 8. Microsoft Research, *Patterns of Trustworthy Experimentation: Post-Experiment Stage*: https://www.microsoft.com/en-us/research/?p=806938
 9. Deng et al., *Improving the Sensitivity of Online Controlled Experiments by Utilizing Pre-Experiment Data*: https://robotics.stanford.edu/~ronnyk/2013-02CUPEDImprovingSensitivityOfControlledExperiments.pdf
 10. statsmodels, two-independent-proportion power calculation: https://www.statsmodels.org/stable/stats.html
+11. Kohavi et al., *Online Experimentation at Microsoft*: https://www.microsoft.com/en-us/research/publication/online-experimentation-at-microsoft/
+12. Microsoft ExP, *Data Quality: Fundamental Building Blocks for Trustworthy A/B Testing Analysis*: https://www.microsoft.com/en-us/research/group/experimentation-platform-exp/articles/data-quality-fundamental-building-blocks-for-trustworthy-a-b-testing-analysis
+13. Microsoft ExP, *Patterns of Trustworthy Experimentation: During-Experiment Stage*: https://www.microsoft.com/en-us/research/?p=720145
+14. Microsoft ExP, *External Validity of Online Experiments: Can We Predict the Future?*: https://www.microsoft.com/en-us/research/articles/external-validity-of-online-experiments-can-we-predict-the-future/
 
-## Research questions still open
+## Research questions still open for production
 
-- What inactivity threshold best reconciles source sessions with behavioural sessions?
-- How much cart activity occurs without a prior same-product view in the same analytics session?
-- Does the largest opportunity come from cart creation, checkout completion, or repeat visits?
-- Which intervention has the clearest mechanism and measurable guardrails?
+- Which checkout step and stable error code explain the largest share of post-cart exits?
+- Do users interpret cart as purchase intent, comparison storage, or price monitoring?
+- Which reassurance component—compatibility, delivery, returns, or payment—changes behaviour?
+- Does the effect persist to fulfilled orders after cancellations and refunds?
+- Can a live A/A validate assignment, trigger, and telemetry across device and geography slices?

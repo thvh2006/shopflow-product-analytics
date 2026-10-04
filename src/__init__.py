@@ -1,0 +1,1 @@
+"""ShopFlow product analytics package."""

@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ShopFlow | Product Analytics & Experimentation</title>
+  <style>
+    :root { --ink:#13263d; --muted:#607086; --paper:#f5f7fb; --card:#fff; --blue:#2a6fbb; --teal:#2a9d8f; --coral:#e76f51; --line:#dce3ec; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; color:var(--ink); background:var(--paper); }
+    header { padding:42px max(28px,calc((100vw - 1180px)/2)); color:white; background:linear-gradient(120deg,#122942,#225b91 62%,#278f87); }
+    header .eyebrow { text-transform:uppercase; letter-spacing:.16em; font-size:12px; font-weight:800; opacity:.75; }
+    header h1 { margin:10px 0 8px; max-width:850px; font-size:clamp(32px,5vw,58px); line-height:1.02; letter-spacing:-.04em; }
+    header p { max-width:800px; margin:0; font-size:17px; line-height:1.6; opacity:.88; }
+    .source-note { display:inline-flex; gap:9px; align-items:center; margin-top:22px; padding:8px 12px; border:1px solid rgba(255,255,255,.25); border-radius:999px; font-size:13px; }
+    .dot { width:8px; height:8px; border-radius:50%; background:#7be0c3; }
+    nav { position:sticky; top:0; z-index:10; display:flex; gap:8px; padding:12px max(28px,calc((100vw - 1180px)/2)); background:rgba(245,247,251,.92); backdrop-filter:blur(12px); border-bottom:1px solid var(--line); overflow:auto; }
+    nav button { border:0; background:transparent; padding:9px 14px; border-radius:999px; font:inherit; font-weight:700; color:var(--muted); cursor:pointer; white-space:nowrap; }
+    nav button.active { color:white; background:var(--ink); }
+    main { width:min(1180px,calc(100% - 40px)); margin:32px auto 72px; }
+    section { display:none; animation:fade .24s ease; }
+    section.active { display:block; }
+    @keyframes fade { from { opacity:.3; transform:translateY(4px); } }
+    h2 { margin:0 0 8px; font-size:30px; letter-spacing:-.025em; }
+    .lede { margin:0 0 26px; max-width:800px; color:var(--muted); line-height:1.6; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:18px; }
+    .card { grid-column:span 4; padding:22px; background:var(--card); border:1px solid var(--line); border-radius:18px; box-shadow:0 8px 30px rgba(19,38,61,.05); }
+    .card.wide { grid-column:span 8; } .card.full { grid-column:1/-1; }
+    .metric-label { color:var(--muted); font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; }
+    .metric { margin:7px 0 2px; font-size:36px; font-weight:850; letter-spacing:-.04em; }
+    .metric-sub { color:var(--muted); font-size:14px; line-height:1.45; }
+    .good { color:var(--teal); } .warn { color:var(--coral); }
+    .funnel { display:grid; gap:13px; margin-top:20px; }
+    .funnel-row { display:grid; grid-template-columns:145px 1fr 90px; align-items:center; gap:12px; font-size:14px; }
+    .track { height:18px; border-radius:99px; background:#edf1f6; overflow:hidden; }
+    .fill { height:100%; min-width:3px; border-radius:inherit; background:linear-gradient(90deg,var(--blue),var(--teal)); }
+    .story { font-size:17px; line-height:1.65; }
+    .story strong { color:var(--blue); }
+    table { width:100%; border-collapse:collapse; margin-top:12px; font-size:14px; }
+    th,td { padding:12px 10px; text-align:right; border-bottom:1px solid var(--line); }
+    th:first-child,td:first-child { text-align:left; } th { color:var(--muted); font-size:12px; text-transform:uppercase; letter-spacing:.05em; }
+    .heat { font-weight:800; border-radius:7px; } .h1 { background:#e1f1ed; } .h2 { background:#d3e7f6; } .h3 { background:#fff0e8; } .h4 { background:#fbded4; }
+    .experiment { display:grid; grid-template-columns:1fr 70px 1fr; align-items:center; gap:16px; margin:24px 0 8px; }
+    .variant { padding:24px; border-radius:16px; background:#f2f5f9; text-align:center; }
+    .variant.treatment { color:white; background:linear-gradient(145deg,#246caa,#279184); }
+    .variant b { display:block; margin-top:6px; font-size:34px; }
+    .arrow { text-align:center; font-size:28px; color:var(--teal); }
+    .ci { position:relative; height:80px; margin-top:18px; }
+    .ci-line { position:absolute; left:25%; right:8%; top:37px; height:4px; background:var(--teal); }
+    .ci-line:before,.ci-line:after { content:""; position:absolute; top:-7px; width:2px; height:18px; background:var(--teal); }
+    .ci-line:after { right:0; } .ci-point { position:absolute; left:67%; top:27px; width:23px; height:23px; border-radius:50%; background:var(--teal); }
+    .zero { position:absolute; left:12%; top:10px; bottom:9px; border-left:2px solid #8b97a6; } .mde { position:absolute; left:34%; top:10px; bottom:9px; border-left:2px dashed var(--coral); }
+    .ci-label { display:flex; justify-content:space-between; padding-top:62px; color:var(--muted); font-size:12px; }
+    .checks { display:grid; gap:12px; margin-top:16px; }
+    .check { display:flex; justify-content:space-between; align-items:center; padding:13px 15px; border:1px solid var(--line); border-radius:12px; }
+    .badge { padding:5px 9px; border-radius:999px; font-size:12px; font-weight:800; background:#ddf2ec; color:#167263; }
+    .badge.fail { background:#fde3db; color:#aa3e25; }
+    .callout { padding:18px; border-left:4px solid var(--coral); border-radius:8px; background:#fff6f2; line-height:1.55; }
+    footer { width:min(1180px,calc(100% - 40px)); margin:0 auto 38px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+    @media (max-width:780px) { .card,.card.wide { grid-column:1/-1; } .experiment { grid-template-columns:1fr; } .arrow { transform:rotate(90deg); } .funnel-row { grid-template-columns:110px 1fr 72px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">Portfolio case study · Product analytics</div>
+    <h1>Find the friction. Design the test. Challenge the result.</h1>
+    <p>An end-to-end diagnosis of 884k e-commerce events, followed by a preregistered and explicitly synthetic experiment for the highest-value opportunity.</p>
+    <div class="source-note"><span class="dot"></span> Real anonymised event backbone · Synthetic treatment assignment and outcomes</div>
+  </header>
+  <nav aria-label="Dashboard views">
+    <button class="active" data-target="overview">Overview</button>
+    <button data-target="opportunity">Opportunity</button>
+    <button data-target="experiment">Experiment</button>
+    <button data-target="trust">Trust & limits</button>
+  </nav>
+  <main>
+    <section id="overview" class="active">
+      <h2>Behavioural baseline</h2>
+      <p class="lede">A reconstructed session model turns unreliable source session IDs into a defensible product funnel. Counts below use strict, documented grains.</p>
+      <div class="grid">
+        <div class="card"><div class="metric-label">Canonical events</div><div class="metric">884,474</div><div class="metric-sub">after 655 exact duplicates removed</div></div>
+        <div class="card"><div class="metric-label">Observed users</div><div class="metric">407,283</div><div class="metric-sub">anonymised persistent user IDs</div></div>
+        <div class="card"><div class="metric-label">Analytics sessions</div><div class="metric">504,679</div><div class="metric-sub">30-minute inactivity reconstruction</div></div>
+        <div class="card wide">
+          <div class="metric-label">Qualified-session funnel</div>
+          <div class="funnel">
+            <div class="funnel-row"><span>Product view</span><div class="track"><div class="fill" style="width:100%"></div></div><b>503,168</b></div>
+            <div class="funnel-row"><span>Reached cart</span><div class="track"><div class="fill" style="width:8.42%"></div></div><b>42,374</b></div>
+            <div class="funnel-row"><span>Purchased</span><div class="track"><div class="fill" style="width:4.61%"></div></div><b>23,218</b></div>
+          </div>
+        </div>
+        <div class="card"><div class="metric-label">Observed return</div><div class="metric">10.47%</div><div class="metric-sub">within 30 days of first observed session; not true acquisition retention</div></div>
+        <div class="card full story">The aggregate funnel says cart creation is scarce. Segmentation adds the useful decision: <strong>expensive products generate unusually strong cart intent, then lose more users after cart.</strong> That is a narrower, testable product problem.</div>
+      </div>
+    </section>
+    <section id="opportunity">
+      <h2>Where intent fails to complete</h2>
+      <p class="lede">The price pattern persists inside the computer category, so it is not explained only by broad category mix.</p>
+      <div class="grid">
+        <div class="card full">
+          <table>
+            <thead><tr><th>Computer price band</th><th>Viewed</th><th>Ordered carts</th><th>View → cart</th><th>Cart → purchase</th></tr></thead>
+            <tbody>
+              <tr><td>Q1 · up to 25.29</td><td>29,451</td><td>1,859</td><td>6.31%</td><td class="heat h1">55.24%</td></tr>
+              <tr><td>Q2 · 25.30–63.92</td><td>36,437</td><td>3,204</td><td>8.79%</td><td class="heat h2">48.69%</td></tr>
+              <tr><td>Q3 · 63.94–176.17</td><td>51,690</td><td>5,539</td><td>10.72%</td><td class="heat h3">43.18%</td></tr>
+              <tr><td>Q4 · at least 176.21</td><td>96,947</td><td>14,255</td><td>14.70%</td><td class="heat h4">41.16%</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="card"><div class="metric-label">Largest subcategory</div><div class="metric">11,713</div><div class="metric-sub">video-card carts, with only 40.10% completion</div></div>
+        <div class="card"><div class="metric-label">Eligible population</div><div class="metric">9,742</div><div class="metric-sub">users at first qualifying high-price computer cart</div></div>
+        <div class="card"><div class="metric-label">Observed baseline</div><div class="metric">42.94%</div><div class="metric-sub">same-product purchase at first eligible session</div></div>
+        <div class="card full callout"><b>Hypothesis, not causal claim:</b> concise compatibility, returns, delivery, and payment reassurance after add-to-cart may reduce decision uncertainty. Price may also proxy promotion, stock, delivery, or brand mix, so random assignment is required.</div>
+      </div>
+    </section>
+    <section id="experiment">
+      <h2>Preregistered synthetic experiment</h2>
+      <p class="lede">User-level 50/50 assignment, 14 days, intention-to-treat. The generator is calibrated to real eligible-user covariates and labels every outcome synthetic.</p>
+      <div class="grid">
+        <div class="card wide">
+          <div class="metric-label">Primary · same-product conversion</div>
+          <div class="experiment"><div class="variant">Control<b>42.40%</b></div><div class="arrow">→</div><div class="variant treatment">Treatment<b>46.01%</b></div></div>
+          <div class="ci"><div class="zero"></div><div class="mde"></div><div class="ci-line"></div><div class="ci-point"></div><div class="ci-label"><span>0 pp</span><span>MDE 2.15 pp</span><span>Effect 3.61 pp</span><span>4.99 pp</span></div></div>
+        </div>
+        <div class="card"><div class="metric-label">Relative lift</div><div class="metric good">+8.52%</div><div class="metric-sub">95% CI for absolute lift: +2.24 to +4.99 points</div></div>
+        <div class="card"><div class="metric-label">Value per eligible user</div><div class="metric good">+16.90</div><div class="metric-sub">source-value units; CUPED-adjusted +17.09</div></div>
+        <div class="card"><div class="metric-label">Latency change</div><div class="metric warn">+17.48 ms</div><div class="metric-sub">detectable, but below +50 ms guardrail</div></div>
+        <div class="card"><div class="metric-label">Decision</div><div class="metric" style="font-size:28px">Staged launch</div><div class="metric-sub">25% rollout with persistent control and latency/error monitoring</div></div>
+      </div>
+    </section>
+    <section id="trust">
+      <h2>Trust before treatment effect</h2>
+      <p class="lede">A trustworthy readout can reject an attractive result. These checks are evaluated before interpreting conversion.</p>
+      <div class="grid">
+        <div class="card wide">
+          <div class="metric-label">Healthy run</div>
+          <div class="checks">
+            <div class="check"><span>Sample ratio mismatch</span><span class="badge">PASS · p = 0.641</span></div>
+            <div class="check"><span>Maximum covariate imbalance</span><span class="badge">PASS · SMD = 0.024</span></div>
+            <div class="check"><span>Primary confidence interval</span><span class="badge">PASS · excludes zero</span></div>
+            <div class="check"><span>Latency decision threshold</span><span class="badge">PASS · upper CI 22.22 ms</span></div>
+          </div>
+        </div>
+        <div class="card"><div class="metric-label">Broken telemetry drill</div><div class="metric warn">p &lt; 1e−19</div><div class="metric-sub">SRM after treatment rows are deliberately lost. The significant outcome is rejected.</div></div>
+        <div class="card full callout"><b>Scope:</b> real anonymised observations support funnel diagnosis only. The fictional ShopFlow context, feature, treatment assignment, and experiment outcomes are synthetic. Purchase-item value is not audited revenue; observed return is not true retention.</div>
+      </div>
+    </section>
+  </main>
+  <footer>ShopFlow Product Analytics & Experimentation · Reproducible SQL, Python, tests, preregistration, and decision memo included in the repository.</footer>
+  <script>
+    const buttons = document.querySelectorAll('nav button');
+    buttons.forEach(button => button.addEventListener('click', () => {
+      buttons.forEach(item => item.classList.remove('active'));
+      document.querySelectorAll('main section').forEach(section => section.classList.remove('active'));
+      button.classList.add('active');
+      document.getElementById(button.dataset.target).classList.add('active');
+    }));
+  </script>
+</body>
+</html>

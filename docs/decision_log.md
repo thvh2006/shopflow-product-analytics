@@ -1,0 +1,13 @@
+# Decision Log
+
+| Date | Decision | Evidence | Consequence |
+|---|---|---|---|
+| 2026-10-04 | Use REES46 electronics events as the observational backbone | Event-level user, session, product, funnel, and price fields; manageable archive | Enables reproducible funnel and retention analysis |
+| 2026-10-04 | Reconstruct sessions with 30-minute inactivity | Source IDs collide across users and can span many days | Retain source ID for audit; use analytics sessions for metrics |
+| 2026-10-04 | Generate experiment data transparently | Source contains no random treatment assignment | Causal results will be synthetic and separated from observational findings |
+| 2026-10-04 | Do not call purchase-item value revenue | No order ID, taxes, discounts, refunds, or currency audit | Use the precise label `observed purchase-item value` |
+| 2026-10-04 | Prioritise high-price computer cart completion | Computer cart completion falls from 55.24% in Q1 to 41.16% in Q4; video cards combine scale and low completion | Test purchase-confidence support after eligible add-to-cart events |
+| 2026-10-04 | Randomise at user level and analyse intention-to-treat | Session assignment could expose the same user to both variants | Stable first-eligibility assignment; one analysis row per user |
+| 2026-10-04 | Power for a 5% relative lift | 42.94% observed eligible baseline; 80% power and two-sided 5% alpha require about 8,391 users per arm | Generate 20,000 assigned users and do not stop early |
+| 2026-10-04 | Treat unresolved SRM as invalidation | Differential telemetry loss can preserve a persuasive treatment estimate | Ship a deliberately broken scenario that the analysis rejects before effect interpretation |
+| 2026-10-04 | Recommend a staged rather than full synthetic launch | Primary metric wins, but latency and error rate move slightly upward | 25% rollout, persistent control, and guardrail monitoring |

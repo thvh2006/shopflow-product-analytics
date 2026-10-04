@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.venv/
+.pytest_cache/
+.ruff_cache/
+.cache/
+.ipynb_checkpoints/
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.duckdb
+*.db
+
+data/raw/*
+data/processed/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep

@@ -4,7 +4,9 @@ An end-to-end product analytics case study using 884k anonymised e-commerce even
 
 > **Status:** complete and reproducible portfolio case study.
 
-**Start here:** [`CASE_STUDY.md`](CASE_STUDY.md) is the full narrative from data audit to rollout decision. The README is the reviewer summary.
+**[Open the interactive product analytics dashboard](https://thvh2006.github.io/shopflow-product-analytics/)** ·
+[Full case study](CASE_STUDY.md) ·
+[Experiment preregistration](docs/experiment_preregistration.md)
 
 ## Decision questions
 

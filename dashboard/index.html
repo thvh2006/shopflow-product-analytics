@@ -3,7 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="End-to-end product analytics case study: funnel reconstruction, opportunity sizing, robustness checks, and a preregistered synthetic experiment.">
   <title>ShopFlow | Product Analytics & Experimentation</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23132942'/%3E%3Cpath d='M15 20h8l4 24h25l4-17H25' fill='none' stroke='%237be0c3' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='31' cy='50' r='3' fill='white'/%3E%3Ccircle cx='49' cy='50' r='3' fill='white'/%3E%3C/svg%3E">
   <style>
     :root { --ink:#13263d; --muted:#607086; --paper:#f5f7fb; --card:#fff; --blue:#2a6fbb; --teal:#2a9d8f; --coral:#e76f51; --line:#dce3ec; }
     * { box-sizing: border-box; }
@@ -56,7 +58,8 @@
     .badge { padding:5px 9px; border-radius:999px; font-size:12px; font-weight:800; background:#ddf2ec; color:#167263; }
     .badge.fail { background:#fde3db; color:#aa3e25; }
     .callout { padding:18px; border-left:4px solid var(--coral); border-radius:8px; background:#fff6f2; line-height:1.55; }
-    footer { width:min(1180px,calc(100% - 40px)); margin:0 auto 38px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+    footer { display:flex; justify-content:space-between; gap:20px; width:min(1180px,calc(100% - 40px)); margin:0 auto 38px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:13px; }
+    footer a { color:var(--ink); font-weight:750; text-decoration:none; }
     @media (max-width:780px) { .card,.card.wide { grid-column:1/-1; } .experiment { grid-template-columns:1fr; } .arrow { transform:rotate(90deg); } .funnel-row { grid-template-columns:110px 1fr 72px; } }
   </style>
 </head>
@@ -182,7 +185,7 @@
       </div>
     </section>
   </main>
-  <footer>ShopFlow Product Analytics & Experimentation · Reproducible SQL, Python, tests, preregistration, and decision memo included in the repository.</footer>
+  <footer><span>ShopFlow Product Analytics & Experimentation · Reproducible SQL, Python, tests, preregistration, and decision memo.</span><a href="https://github.com/thvh2006/shopflow-product-analytics">View source</a></footer>
   <script>
     const buttons = document.querySelectorAll('nav button');
     buttons.forEach(button => button.addEventListener('click', () => {

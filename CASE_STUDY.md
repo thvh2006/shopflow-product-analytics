@@ -10,9 +10,9 @@ The main opportunity is a post-cart gap for expensive computer products. Highest
 
 Video cards combine the greatest cart volume, low completion, and highest scenario value gap. The team therefore prioritises a reversible purchase-confidence panel that surfaces compatibility, delivery, return, and payment information immediately after a qualifying add-to-cart.
 
-Because the public source has no treatment assignment, the repository does not pretend it contains a real A/B test. Instead, it preregisters a design and creates a transparent synthetic experiment calibrated from real eligible-user covariates. The healthy run passes SRM and balance checks and estimates a +3.51 percentage-point conversion effect (95% CI +2.13 to +4.88). A second dataset deliberately loses treatment telemetry; its outcome is also significant, but SRM has `p < 1e-19`, so the result is rejected.
+Because the public source has no treatment assignment, the repository does not pretend it contains a real A/B test. Instead, it preregisters a design and creates a transparent synthetic experiment calibrated from real eligible-user covariates. Each of the 9,742 eligible users appears at most once. The healthy run recovers the injected effect (+2.87 percentage points; 95% CI +0.90 to +4.84), while a deliberately broken telemetry run fails SRM (`p < 5e-8`) and is rejected.
 
-The final synthetic decision is a 25% staged launch with persistent control and guardrail monitoring. The real-world recommendation is more cautious: implement the event contract, conduct qualitative research, run a production A/A, and then run the preregistered user-randomised test.
+The simulation receives no launch authority. The real-world recommendation is to implement the event contract, conduct qualitative research, run a production A/A, reach the 16,782-user planning floor, and then run the preregistered user-randomised test.
 
 ## 1. Decision context
 
@@ -205,38 +205,38 @@ At 10,000 intended users per arm, 1–2% differential treatment telemetry loss d
 
 ## 12. Synthetic readout
 
-The healthy generated run contains 10,033 control and 9,967 treatment users. SRM has `p = 0.641`, and maximum absolute pre-period SMD is 0.008.
+The healthy generated run contains 4,862 control and 4,880 treatment users. SRM has
+`p = 0.855`, maximum absolute pre-period SMD is 0.016, and all 9,742 source users are
+unique. The generator exposes its 0.12 log-odds base treatment effect.
 
 | Metric | Control | Treatment | Effect | 95% CI |
 |---|---:|---:|---:|---:|
-| Same-product conversion | 43.05% | 46.55% | +3.51 pp | +2.13 to +4.88 pp |
-| Purchase-item value / eligible user | — | — | +12.50 | +7.92 to +17.08 |
-| CUPED-adjusted value | — | — | +12.56 | +7.99 to +17.14 |
-| Checkout latency | — | — | +17.48 ms | +12.75 to +22.22 ms |
+| Same-product conversion | 43.71% | 46.58% | +2.87 pp | +0.90 to +4.84 pp |
+| Purchase-item value / eligible user | — | — | +4.98 | −1.60 to +11.57 |
+| CUPED-adjusted value | — | — | +5.07 | −1.50 to +11.63 |
+| Checkout latency | — | — | +18.27 ms | +11.49 to +25.05 ms |
 
-Latency movement is statistically detectable but remains below the prespecified +50 ms guardrail. Error rate moves from 0.65% to 0.75%, below the +0.20-point threshold but worth monitoring.
+Latency movement is statistically detectable but remains below the illustrative +50 ms guardrail. Error rate is 0.74% in control and 0.64% in treatment.
 
-First-observed and returning estimates differ numerically, but the interaction has `p = 0.448`. Days 1–2 and days 3–14 also differ numerically, but their interaction has `p = 0.733`. The analysis correctly avoids claiming heterogeneity from “significant here, not significant there.”
+First-observed and returning estimates differ numerically, but the interaction has `p = 0.639`. Days 1–2 and days 3–14 also differ numerically, but their interaction has `p = 0.874`. The analysis correctly avoids claiming heterogeneity from “significant here, not significant there.”
 
 ![Experiment heterogeneity](reports/figures/08_experiment_heterogeneity.png)
 
 ## 13. Broken telemetry drill
 
-The red-team dataset loses treatment records more frequently, leaving 9,988 control and 8,742 treatment users. It still produces a favourable and statistically significant conversion estimate.
+The red-team dataset loses treatment records more frequently, leaving 4,843 control
+and 4,319 treatment users. It still produces a favourable and statistically
+significant conversion estimate.
 
-SRM has `p < 1e-19`. The readout stops. No launch decision is made from that estimate. The product lesson is more important than the simulated number: a statistically convincing outcome can be operationally invalid.
+SRM has `p < 5e-8`. The readout stops. No launch decision is made from that estimate. The product lesson is more important than the simulated number: a statistically convincing outcome can be operationally invalid.
 
 ## 14. Decision and rollout
 
-For the healthy synthetic case, the rule supports a 25% staged launch:
-
-1. preserve a persistent control;
-2. monitor assignment, render coverage, latency, errors, and checkout steps daily;
-3. follow orders through cancellation/refund maturity;
-4. do not generalise to cheap products or other categories;
-5. run a component experiment if the bundle effect persists.
-
-For a real organisation, the next action is not to claim this lift. It is to implement the data contract, conduct five to eight targeted qualitative sessions, validate the system with A/A, and then run the preregistered experiment.
+The healthy synthetic case demonstrates the decision pipeline but supports **no
+rollout**: its effect is injected and its 9,742 unique users fall below the 16,782-user
+planning floor. For a real organisation, the next action is to implement the data
+contract, conduct five to eight targeted qualitative sessions, validate the system
+with A/A, and then run the preregistered experiment to the required sample size.
 
 ## 15. What this case demonstrates
 

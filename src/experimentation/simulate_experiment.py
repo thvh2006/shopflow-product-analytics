@@ -34,13 +34,22 @@ def load_calibration_population() -> pd.DataFrame:
 
 def simulate_experiment(
     population: pd.DataFrame,
-    sample_size: int = 20_000,
+    sample_size: int | None = None,
     scenario: str = "healthy",
 ) -> pd.DataFrame:
     rng = np.random.default_rng(SEED)
     stable_population = population.sort_values("user_id").reset_index(drop=True)
+    if stable_population["user_id"].duplicated().any():
+        raise ValueError("Calibration population must contain one row per user")
+    if sample_size is None:
+        sample_size = len(stable_population)
+    if sample_size > len(stable_population):
+        raise ValueError(
+            "sample_size exceeds the unique eligible-user population; "
+            "synthetic users must not be created by resampling observed users"
+        )
     sampled = stable_population.sample(
-        sample_size, replace=True, random_state=SEED
+        sample_size, replace=False, random_state=SEED
     ).reset_index(drop=True)
     sampled["experiment_user_id"] = np.arange(1, sample_size + 1)
     sampled["variant"] = np.where(rng.random(sample_size) < 0.5, "treatment", "control")
@@ -68,6 +77,8 @@ def simulate_experiment(
         rng.normal(880 + (18 * treatment), 170, sample_size),
     )
     sampled["error_event"] = rng.binomial(1, 0.006 + (0.0005 * treatment))
+    sampled["outcome_provenance"] = "synthetic_injected_effect"
+    sampled["injected_treatment_log_odds"] = treatment_log_odds
 
     if scenario == "srm":
         # A deliberately broken telemetry scenario: treatment rows are lost more often.
@@ -83,7 +94,12 @@ def simulate_experiment(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--scenario", choices=["healthy", "srm"], default="healthy")
-    parser.add_argument("--sample-size", type=int, default=20_000)
+    parser.add_argument(
+        "--sample-size",
+        type=int,
+        default=None,
+        help="Unique eligible users to simulate; defaults to the full eligible population.",
+    )
     arguments = parser.parse_args()
 
     population = load_calibration_population()

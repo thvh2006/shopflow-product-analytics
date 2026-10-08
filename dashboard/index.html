@@ -154,17 +154,17 @@
     </section>
     <section id="experiment">
       <h2>Preregistered synthetic experiment</h2>
-      <p class="lede">User-level 50/50 assignment, 14 days, intention-to-treat. The generator is calibrated to real eligible-user covariates and labels every outcome synthetic.</p>
+      <p class="lede">User-level 50/50 assignment, 14 days, intention-to-treat. All 9,742 eligible source users appear once; the 0.12 log-odds effect is injected and explicitly labelled.</p>
       <div class="grid">
         <div class="card wide">
           <div class="metric-label">Primary · same-product conversion</div>
-          <div class="experiment"><div class="variant">Control<b>43.05%</b></div><div class="arrow">→</div><div class="variant treatment">Treatment<b>46.55%</b></div></div>
-          <div class="ci"><div class="zero"></div><div class="mde"></div><div class="ci-line"></div><div class="ci-point"></div><div class="ci-label"><span>0 pp</span><span>MDE 2.15 pp</span><span>Effect 3.51 pp</span><span>4.88 pp</span></div></div>
+          <div class="experiment"><div class="variant">Control<b>43.71%</b></div><div class="arrow">→</div><div class="variant treatment">Treatment<b>46.58%</b></div></div>
+          <div class="ci"><div class="zero"></div><div class="mde"></div><div class="ci-line"></div><div class="ci-point"></div><div class="ci-label"><span>0 pp</span><span>MDE 2.15 pp</span><span>Effect 2.87 pp</span><span>4.84 pp</span></div></div>
         </div>
-        <div class="card"><div class="metric-label">Relative lift</div><div class="metric good">+8.14%</div><div class="metric-sub">95% CI for absolute lift: +2.13 to +4.88 points</div></div>
-        <div class="card"><div class="metric-label">Value per eligible user</div><div class="metric good">+12.50</div><div class="metric-sub">source-value units; CUPED-adjusted +12.56</div></div>
-        <div class="card"><div class="metric-label">Latency change</div><div class="metric warn">+17.48 ms</div><div class="metric-sub">detectable, but below +50 ms guardrail</div></div>
-        <div class="card"><div class="metric-label">Decision</div><div class="metric" style="font-size:28px">Staged launch</div><div class="metric-sub">25% rollout with persistent control and latency/error monitoring</div></div>
+        <div class="card"><div class="metric-label">Relative lift</div><div class="metric good">+6.57%</div><div class="metric-sub">95% CI for absolute lift: +0.90 to +4.84 points</div></div>
+        <div class="card"><div class="metric-label">Value per eligible user</div><div class="metric">+4.98</div><div class="metric-sub">CI crosses zero; CUPED-adjusted +5.07</div></div>
+        <div class="card"><div class="metric-label">Latency change</div><div class="metric warn">+18.27 ms</div><div class="metric-sub">detectable, but below illustrative +50 ms guardrail</div></div>
+        <div class="card"><div class="metric-label">Evidence decision</div><div class="metric" style="font-size:28px">No rollout claim</div><div class="metric-sub">Injected effect + 9,742 unique users versus 16,782-user planning floor</div></div>
       </div>
     </section>
     <section id="trust">
@@ -174,13 +174,14 @@
         <div class="card wide">
           <div class="metric-label">Healthy run</div>
           <div class="checks">
-            <div class="check"><span>Sample ratio mismatch</span><span class="badge">PASS · p = 0.641</span></div>
-            <div class="check"><span>Maximum covariate imbalance</span><span class="badge">PASS · SMD = 0.008</span></div>
+            <div class="check"><span>Sample ratio mismatch</span><span class="badge">PASS · p = 0.855</span></div>
+            <div class="check"><span>Maximum covariate imbalance</span><span class="badge">PASS · SMD = 0.016</span></div>
+            <div class="check"><span>Unique source users</span><span class="badge">PASS · 0 duplicates</span></div>
             <div class="check"><span>Primary confidence interval</span><span class="badge">PASS · excludes zero</span></div>
-            <div class="check"><span>Latency decision threshold</span><span class="badge">PASS · upper CI 22.22 ms</span></div>
+            <div class="check"><span>Latency decision threshold</span><span class="badge">PASS · upper CI 25.05 ms</span></div>
           </div>
         </div>
-        <div class="card"><div class="metric-label">Broken telemetry drill</div><div class="metric warn">p &lt; 1e−19</div><div class="metric-sub">SRM after treatment rows are deliberately lost. The significant outcome is rejected.</div></div>
+        <div class="card"><div class="metric-label">Broken telemetry drill</div><div class="metric warn">p &lt; 5e−8</div><div class="metric-sub">SRM after treatment rows are deliberately lost. The significant outcome is rejected.</div></div>
         <div class="card full callout"><b>Scope:</b> real anonymised observations support funnel diagnosis only. The fictional ShopFlow context, feature, treatment assignment, and experiment outcomes are synthetic. Purchase-item value is not audited revenue; observed return is not true retention.</div>
       </div>
     </section>

@@ -119,6 +119,15 @@ def analyze(data: pd.DataFrame) -> dict:
 
     return {
         "scenario": str(data["scenario"].iloc[0]),
+        "evidence_class": "simulation_only",
+        "outcome_provenance": str(data["outcome_provenance"].iloc[0]),
+        "unique_source_users": int(data["user_id"].nunique()),
+        "duplicate_source_users": int(data["user_id"].duplicated().sum()),
+        "injected_treatment_log_odds": {
+            "base": 0.12,
+            "minimum": float(data["injected_treatment_log_odds"].min()),
+            "maximum": float(data["injected_treatment_log_odds"].max()),
+        },
         "sample_size": len(data),
         "assignment": {"control": len(control), "treatment": len(treatment)},
         "srm_p_value": srm_p_value,

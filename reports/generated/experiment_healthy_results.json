@@ -1,177 +1,186 @@
 {
   "scenario": "healthy",
-  "sample_size": 20000,
-  "assignment": {
-    "control": 10033,
-    "treatment": 9967
+  "evidence_class": "simulation_only",
+  "outcome_provenance": "synthetic_injected_effect",
+  "unique_source_users": 9742,
+  "duplicate_source_users": 0,
+  "injected_treatment_log_odds": {
+    "base": 0.12,
+    "minimum": 0.12,
+    "maximum": 0.14159999999999998
   },
-  "srm_p_value": 0.640721345025641,
-  "max_absolute_covariate_smd": 0.007963873717198812,
+  "sample_size": 9742,
+  "assignment": {
+    "control": 4862,
+    "treatment": 4880
+  },
+  "srm_p_value": 0.855294000505257,
+  "max_absolute_covariate_smd": 0.015536611545388582,
   "covariate_smd": {
-    "prior_sessions": -0.001882434388407377,
-    "prior_purchase_rate": -0.006635558616261389,
-    "prior_purchase_item_value": -0.007963873717198812
+    "prior_sessions": 0.015536611545388582,
+    "prior_purchase_rate": 0.014880818922852562,
+    "prior_purchase_item_value": -0.006622856639334979
   },
   "primary_conversion": {
-    "control_rate": 0.43047941792086114,
-    "treatment_rate": 0.4655362696899769,
-    "absolute_effect": 0.03505685176911577,
-    "relative_lift": 0.08143676633469288,
-    "ci_low": 0.02127457585436328,
-    "ci_high": 0.048820577323046864,
-    "p_value": 6.201182330337069e-07
+    "control_rate": 0.4370629370629371,
+    "treatment_rate": 0.46577868852459015,
+    "absolute_effect": 0.02871575146165306,
+    "relative_lift": 0.06570163934426221,
+    "ci_low": 0.008952152191702725,
+    "ci_high": 0.04844735450125667,
+    "p_value": 0.004403045962033357
   },
   "purchase_value_per_eligible_user": {
-    "difference": 12.496246075039394,
-    "ci_low": 7.917169841961914,
-    "ci_high": 17.075322308116874,
-    "p_value": 8.955325464616847e-08
+    "difference": 4.983043705047521,
+    "ci_low": -1.6040523118782142,
+    "ci_high": 11.570139721973256,
+    "p_value": 0.13819056742796457
   },
   "cuped_purchase_value_per_eligible_user": {
-    "difference": 12.563005574645786,
-    "ci_low": 7.989834005868715,
-    "ci_high": 17.136177143422856,
-    "p_value": 7.357393733045088e-08,
-    "theta": 0.21649763118618587,
-    "variance_reduction": 0.002571334842916162
+    "difference": 5.066142495508728,
+    "ci_low": -1.5020721660070064,
+    "ci_high": 11.634357157024464,
+    "p_value": 0.1306315322822811,
+    "theta": 0.2451133824437567,
+    "variance_reduction": 0.005719225704392317
   },
   "guardrails": {
     "checkout_latency_ms": {
-      "difference": 17.48362594861817,
-      "ci_low": 12.74666833268098,
-      "ci_high": 22.22058356455536,
-      "p_value": 4.85810425606158e-13
+      "difference": 18.269058348909653,
+      "ci_low": 11.485020140315886,
+      "ci_high": 25.05309655750342,
+      "p_value": 1.333541529741728e-07
     },
     "error_rate": {
-      "control": 0.006478620552177813,
-      "treatment": 0.007524831945419886
+      "control": 0.007404360345536816,
+      "treatment": 0.0063524590163934426
     }
   },
   "heterogeneity": {
     "first_observed_users": {
-      "control_rate": 0.42099084292087346,
-      "treatment_rate": 0.45811115061026186,
-      "absolute_effect": 0.0371203076893884,
-      "ci_low": 0.0221812316724838,
-      "ci_high": 0.052036502652884994,
-      "control_n": 8518,
-      "treatment_n": 8439
+      "control_rate": 0.4261777561923264,
+      "treatment_rate": 0.4566221142162819,
+      "absolute_effect": 0.03044435802395551,
+      "ci_low": 0.008992477199741462,
+      "ci_high": 0.051856742076540036,
+      "control_n": 4118,
+      "treatment_n": 4115
     },
     "returning_users": {
-      "control_rate": 0.48382838283828383,
-      "treatment_rate": 0.506544502617801,
-      "absolute_effect": 0.022716119779517208,
-      "ci_low": -0.012799346530226262,
-      "ci_high": 0.058150466891131486,
-      "control_n": 1515,
-      "treatment_n": 1528
+      "control_rate": 0.49731182795698925,
+      "treatment_rate": 0.515032679738562,
+      "absolute_effect": 0.01772085178157279,
+      "ci_low": -0.03266198632577972,
+      "ci_high": 0.06797856306826078,
+      "control_n": 744,
+      "treatment_n": 765
     },
-    "returning_interaction_p_value": 0.44778869619631056,
+    "returning_interaction_p_value": 0.6390421140807275,
     "days_1_2": {
-      "control_rate": 0.44238683127572015,
-      "treatment_rate": 0.4717514124293785,
-      "absolute_effect": 0.029364581153658365,
-      "ci_low": -0.007053279016948931,
-      "ci_high": 0.06567959003746862,
-      "control_n": 1458,
-      "treatment_n": 1416
+      "control_rate": 0.4393491124260355,
+      "treatment_rate": 0.47198879551820727,
+      "absolute_effect": 0.032639683092171745,
+      "ci_low": -0.019709149291977715,
+      "ci_high": 0.08470841344534527,
+      "control_n": 676,
+      "treatment_n": 714
     },
     "days_3_14": {
-      "control_rate": 0.42845481049562684,
-      "treatment_rate": 0.4645070751958835,
-      "absolute_effect": 0.036052264700256687,
-      "ci_low": 0.021163194518433945,
-      "ci_high": 0.05091888035173469,
-      "control_n": 8575,
-      "treatment_n": 8551
+      "control_rate": 0.4366937410415671,
+      "treatment_rate": 0.46471435429668745,
+      "absolute_effect": 0.02802061325512034,
+      "ci_low": 0.006678840672775285,
+      "ci_high": 0.049326783941126634,
+      "control_n": 4186,
+      "treatment_n": 4166
     },
-    "early_window_interaction_p_value": 0.7334653304156822,
+    "early_window_interaction_p_value": 0.874264842989045,
     "warning": "Exploratory slices; interaction tests, not within-slice significance, assess heterogeneity."
   },
   "daily_effect": [
     {
       "experiment_day": 1,
-      "control": 0.453125,
-      "treatment": 0.46372688477951635,
-      "absolute_effect": 0.010601884779516346
+      "control": 0.4631268436578171,
+      "treatment": 0.45558739255014324,
+      "absolute_effect": -0.007539451107673845
     },
     {
       "experiment_day": 2,
-      "control": 0.4323607427055703,
-      "treatment": 0.4796633941093969,
-      "absolute_effect": 0.04730265140382661
+      "control": 0.41543026706231456,
+      "treatment": 0.4876712328767123,
+      "absolute_effect": 0.07224096581439776
     },
     {
       "experiment_day": 3,
-      "control": 0.44214876033057854,
-      "treatment": 0.4701492537313433,
-      "absolute_effect": 0.02800049340076477
+      "control": 0.45325779036827196,
+      "treatment": 0.5078534031413613,
+      "absolute_effect": 0.05459561277308933
     },
     {
       "experiment_day": 4,
-      "control": 0.4185733512786003,
-      "treatment": 0.4755747126436782,
-      "absolute_effect": 0.057001361365077885
+      "control": 0.4246153846153846,
+      "treatment": 0.4444444444444444,
+      "absolute_effect": 0.019829059829059803
     },
     {
       "experiment_day": 5,
-      "control": 0.40387275242047027,
-      "treatment": 0.4682860998650472,
-      "absolute_effect": 0.06441334744457694
+      "control": 0.44972067039106145,
+      "treatment": 0.4684931506849315,
+      "absolute_effect": 0.018772480293870075
     },
     {
       "experiment_day": 6,
-      "control": 0.4178885630498534,
-      "treatment": 0.47289972899729,
-      "absolute_effect": 0.0550111659474366
+      "control": 0.44886363636363635,
+      "treatment": 0.4550408719346049,
+      "absolute_effect": 0.006177235570968553
     },
     {
       "experiment_day": 7,
-      "control": 0.4342629482071713,
-      "treatment": 0.4575799721835883,
-      "absolute_effect": 0.023317023976416995
+      "control": 0.44846796657381616,
+      "treatment": 0.4388888888888889,
+      "absolute_effect": -0.009579077684927273
     },
     {
       "experiment_day": 8,
-      "control": 0.4263888888888889,
-      "treatment": 0.46219686162624823,
-      "absolute_effect": 0.03580797273735936
+      "control": 0.41896024464831805,
+      "treatment": 0.4885057471264368,
+      "absolute_effect": 0.06954550247811875
     },
     {
       "experiment_day": 9,
-      "control": 0.4257871064467766,
-      "treatment": 0.46703296703296704,
-      "absolute_effect": 0.04124586058619045
+      "control": 0.44662921348314605,
+      "treatment": 0.40705128205128205,
+      "absolute_effect": -0.039577931431864
     },
     {
       "experiment_day": 10,
-      "control": 0.44017094017094016,
-      "treatment": 0.45548961424332346,
-      "absolute_effect": 0.015318674072383298
+      "control": 0.4235294117647059,
+      "treatment": 0.49696969696969695,
+      "absolute_effect": 0.07344028520499107
     },
     {
       "experiment_day": 11,
-      "control": 0.4402332361516035,
-      "treatment": 0.47238372093023256,
-      "absolute_effect": 0.032150484778629085
+      "control": 0.4346590909090909,
+      "treatment": 0.502906976744186,
+      "absolute_effect": 0.06824788583509517
     },
     {
       "experiment_day": 12,
-      "control": 0.4369063772048847,
-      "treatment": 0.4597222222222222,
-      "absolute_effect": 0.02281584501733752
+      "control": 0.43157894736842106,
+      "treatment": 0.45892351274787535,
+      "absolute_effect": 0.02734456537945429
     },
     {
       "experiment_day": 13,
-      "control": 0.4066390041493776,
-      "treatment": 0.4582210242587601,
-      "absolute_effect": 0.05158202010938251
+      "control": 0.42105263157894735,
+      "treatment": 0.4276729559748428,
+      "absolute_effect": 0.006620324395895438
     },
     {
       "experiment_day": 14,
-      "control": 0.4488078541374474,
-      "treatment": 0.4550408719346049,
-      "absolute_effect": 0.006233017797157514
+      "control": 0.43567251461988304,
+      "treatment": 0.47023809523809523,
+      "absolute_effect": 0.03456558061821219
     }
   ]
 }

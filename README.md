@@ -8,6 +8,12 @@ An end-to-end product analytics case study using 884k anonymised e-commerce even
 [Full case study](CASE_STUDY.md) ·
 [Experiment preregistration](docs/experiment_preregistration.md)
 
+## Start here
+
+- [Executed research walkthrough](notebooks/01_research_walkthrough.ipynb) — event grain, session reconstruction, and behavioural features
+- [Executed experiment validation](notebooks/02_experiment_validation.ipynb) — power, SRM, balance, synthetic evidence, and claim boundaries
+- [Feature provenance](docs/feature_provenance.md) and [machine-readable register](reports/feature_provenance.csv)
+
 ## Decision questions
 
 1. Where does the product journey lose the most qualified intent?
